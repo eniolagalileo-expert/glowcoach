@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>GlowCoach</title>
+  <meta name="description" content="A selfie becomes a skin plan: AI skin analysis, a routine that fits your budget, a matched foundation shade, makeup try-on, and a preview of your skin goals.">
+  <meta name="theme-color" content="#fbf4ef">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="#home" class="brand" aria-label="GlowCoach home">
+      <img src="img/icon.svg" alt="" width="28" height="28"> GlowCoach
+    </a>
+    <span id="mode-badge" class="badge" hidden></span>
+    <a href="#progress" class="topbar-link">Progress</a>
+  </header>
+
+  <main id="app">
+    <!-- Home -->
+    <section class="screen" data-screen="home">
+      <div class="hero">
+        <p class="eyebrow">AI skin coach + shop</p>
+        <h1>Your selfie, turned into a skin plan.</h1>
+        <p class="lede">GlowCoach reads 8 skin concerns and your skin tone with YouCam AI, builds a morning and night routine for your budget, matches your foundation shade, lets you try looks on, and shows where your routine is heading.</p>
+      </div>
+      <div class="actions">
+        <a href="#capture" id="start-live" class="btn primary">Start my skin check</a>
+        <button type="button" id="start-sample" class="btn ghost" hidden>Try it with a sample photo</button>
+      </div>
+      <p id="live-note" class="note" hidden></p>
+      <ol class="how">
+        <li><strong>Scan</strong> one front-facing selfie</li>
+        <li><strong>Plan</strong> an AM/PM routine for your top concerns</li>
+        <li><strong>Try on</strong> your shade match and three looks</li>
+        <li><strong>Track</strong> your scores over the weeks</li>
+      </ol>
+      <p class="fine">Photos are sent to YouCam for analysis and are not saved by GlowCoach. Only your scores are kept, on this device. GlowCoach is a cosmetic guide, not medical advice.</p>
+    </section>
+
+    <!-- Capture -->
+    <section class="screen" data-screen="capture" hidden>
+      <h2>Take a clear selfie</h2>
+      <div class="camera" id="camera">
+        <video id="camera-video" playsinline muted hidden></video>
+        <img id="capture-preview" alt="Your photo" hidden>
+        <div class="face-guide" aria-hidden="true"></div>
+        <p id="camera-empty" class="camera-empty">Use your camera or choose a photo.</p>
+      </div>
+      <ul class="tips">
+        <li>Face the camera straight on, no glasses</li>
+        <li>Soft, even light (a window works best)</li>
+        <li>Hair off your forehead, face filling the oval</li>
+      </ul>
+      <p id="capture-error" class="error" role="alert" hidden></p>
+      <div class="actions">
+        <button type="button" id="camera-start" class="btn primary">Open camera</button>
+        <button type="button" id="camera-snap" class="btn primary" hidden>Take photo</button>
+        <label class="btn ghost file-btn">
+          Choose a photo
+          <input type="file" id="file-input" accept="image/jpeg,image/png" hidden>
+        </label>
+        <a href="#goals" id="capture-next" class="btn primary" hidden>Use this photo</a>
+      </div>
+    </section>
+
+    <!-- Goals -->
+    <section class="screen" data-screen="goals" hidden>
+      <h2>What would you like to work on?</h2>
+      <p class="sub">Pick any that matter to you. Your scan decides the rest.</p>
+      <div id="goal-chips" class="chips" role="group" aria-label="Skin goals"></div>
+      <h3>Routine budget</h3>
+      <div id="budget-options" class="segmented" role="radiogroup" aria-label="Budget"></div>
+      <div class="actions">
+        <button type="button" id="analyze" class="btn primary">Analyze my skin</button>
+      </div>
+    </section>
+
+    <!-- Analyzing -->
+    <section class="screen" data-screen="analyzing" hidden>
+      <div class="analyzing">
+        <div class="scan-photo"><img id="analyzing-photo" alt=""><div class="scan-line"></div></div>
+        <ol id="analyze-steps" class="steps">
+          <li data-step="upload">Uploading your photo</li>
+          <li data-step="skin">Reading 8 skin concerns</li>
+          <li data-step="tone">Measuring your skin tone</li>
+          <li data-step="plan">Building your plan</li>
+        </ol>
+        <div id="analyze-error" class="error-box" role="alert" hidden>
+          <p id="analyze-error-text"></p>
+          <div class="actions">
+            <a href="#capture" class="btn primary">Retake photo</a>
+            <button type="button" class="btn ghost use-sample" hidden>Use the sample photo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="screen" data-screen="results" hidden>
+      <div class="sample-banner" hidden>Sample results, recorded from the YouCam AI on YouCam’s sample photo.</div>
+      <div class="score-head">
+        <div class="ring" id="glow-ring"><span id="glow-score"></span><small>Glow score</small></div>
+        <div>
+          <h2 id="skin-type-title"></h2>
+          <p id="focus-summary" class="sub"></p>
+        </div>
+      </div>
+      <div class="photo-wrap" id="mask-photo">
+        <img id="results-photo" alt="Your photo">
+        <img id="mask-overlay" class="mask" alt="" hidden>
+      </div>
+      <p class="hint">Tap a concern to see where the AI found it.</p>
+      <ul id="concern-list" class="concerns"></ul>
+      <div class="actions"><a href="#plan" class="btn primary">See my routine</a></div>
+    </section>
+
+    <!-- Plan -->
+    <section class="screen" data-screen="plan" hidden>
+      <h2>Your routine</h2>
+      <p id="plan-focus" class="sub"></p>
+      <h3 class="routine-title"><span class="sun" aria-hidden="true"></span>Morning</h3>
+      <ol id="routine-am" class="routine"></ol>
+      <h3 class="routine-title"><span class="moon" aria-hidden="true"></span>Night</h3>
+      <ol id="routine-pm" class="routine"></ol>
+      <div class="total-bar">
+        <span><span id="plan-count"></span> products · <strong id="plan-total"></strong></span>
+        <button type="button" id="add-routine" class="btn primary small">Add routine to bag</button>
+      </div>
+    </section>
+
+    <!-- Try-on -->
+    <section class="screen" data-screen="tryon" hidden>
+      <h2>Your shade and looks</h2>
+      <div id="shade-card" class="shade-card"></div>
+      <div id="look-tabs" class="look-tabs" role="tablist"></div>
+      <div id="tryon-view" class="compare" hidden>
+        <img class="before" alt="Before">
+        <div class="after-clip"><img class="after" alt="With the look"></div>
+        <input type="range" min="0" max="100" value="50" aria-label="Compare before and after">
+        <span class="tag left">Before</span><span class="tag right">After</span>
+      </div>
+      <p id="tryon-status" class="status" role="status"></p>
+      <div id="look-products" class="look-products"></div>
+    </section>
+
+    <!-- Future -->
+    <section class="screen" data-screen="future" hidden>
+      <h2>Where your routine is heading</h2>
+      <p id="future-focus" class="sub"></p>
+      <div id="future-view" class="compare" hidden>
+        <img class="before" alt="Today">
+        <div class="after-clip"><img class="after" alt="Simulated goal skin"></div>
+        <input type="range" min="0" max="100" value="50" aria-label="Compare today and goal">
+        <span class="tag left">Today</span><span class="tag right">Goal</span>
+      </div>
+      <p id="future-status" class="status" role="status"></p>
+      <div class="actions"><button type="button" id="future-run" class="btn primary">Show my goal skin</button></div>
+      <p class="fine">An AI illustration of the concerns your routine targets, not a promise. Results vary by person and take consistent use over weeks.</p>
+    </section>
+
+    <!-- Bag -->
+    <section class="screen" data-screen="bag" hidden>
+      <h2>Your bag</h2>
+      <ul id="bag-lines" class="bag"></ul>
+      <p id="bag-empty" class="sub" hidden>Your bag is empty. Add your routine or a look.</p>
+      <div id="bag-footer" class="total-bar" hidden>
+        <span>Total <strong id="bag-total"></strong></span>
+        <button type="button" id="checkout" class="btn primary small">Checkout (demo)</button>
+      </div>
+      <div id="checkout-done" class="done" role="status" hidden>
+        <h3>Demo order complete</h3>
+        <p>This is a sample store, so nothing was charged or shipped. In a real shop, this is where the retailer’s checkout takes over.</p>
+      </div>
+      <p class="fine">Lumen &amp; Leaf is a fictional sample brand. A retailer would plug in its own catalog.</p>
+    </section>
+
+    <!-- Progress -->
+    <section class="screen" data-screen="progress" hidden>
+      <h2>Your progress</h2>
+      <div id="progress-chart" class="chart"></div>
+      <ul id="progress-changes" class="concerns compact"></ul>
+      <p id="progress-empty" class="sub"></p>
+      <div class="actions"><a href="#capture" class="btn primary">New scan</a></div>
+    </section>
+  </main>
+
+  <nav class="tabbar" id="tabbar" hidden>
+    <a href="#results" data-tab="results">Skin</a>
+    <a href="#plan" data-tab="plan">Routine</a>
+    <a href="#tryon" data-tab="tryon">Try-on</a>
+    <a href="#future" data-tab="future">Goal</a>
+    <a href="#bag" data-tab="bag">Bag <span id="bag-count" class="count" hidden></span></a>
+  </nav>
+</body>
+</html>
