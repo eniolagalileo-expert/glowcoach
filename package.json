@@ -1,0 +1,13 @@
+{
+  "name": "glowcoach",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "GlowCoach: an AI skin-care shopping coach built on the YouCam API.",
+  "scripts": {
+    "dev": "node server.js",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=18" },
+  "license": "MIT"
+}
