@@ -1,7 +1,8 @@
 // Records the "sample photo" journey once, from real YouCam API calls, so
 // visitors can explore GlowCoach without spending units. Images are saved
 // locally because YouCam result links expire after 2 hours.
-// Usage: node scripts/record-sample.mjs   (reads YOUCAM_API_KEY from .env)
+// Usage: node scripts/record-sample.mjs [look ids...]   (reads YOUCAM_API_KEY from .env)
+// With look ids (e.g. natural), only those looks are recorded.
 // Cost: about 41 units (analysis 12, tone 20, three looks 3, simulation 6).
 import fs from 'node:fs';
 import path from 'node:path';
@@ -49,8 +50,9 @@ for (const s of skin.scores) {
   scores.push({ concern: s.concern, score: s.score, mask: s.mask ? await download(s.mask, `mask-${s.concern}.png`) : null });
 }
 
+const only = process.argv.slice(2);
 const tryon = {};
-for (const look of buildLooks(tone.tone).looks) {
+for (const look of buildLooks(tone.tone).looks.filter((l) => !only.length || only.includes(l.id))) {
   const result = await run('makeup-vto', fileId, { look: look.request });
   tryon[look.id] = await download(result.image, `look-${look.id}.jpg`);
 }

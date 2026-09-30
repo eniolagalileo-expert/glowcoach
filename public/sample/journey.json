@@ -1,0 +1,58 @@
+{
+  "photo": "sample/selfie.jpg",
+  "width": 1080,
+  "height": 1437,
+  "scores": [
+    {
+      "concern": "redness",
+      "score": 94,
+      "mask": "sample/mask-redness.png"
+    },
+    {
+      "concern": "oiliness",
+      "score": 98,
+      "mask": "sample/mask-oiliness.png"
+    },
+    {
+      "concern": "pore",
+      "score": 97,
+      "mask": "sample/mask-pore.png"
+    },
+    {
+      "concern": "texture",
+      "score": 98,
+      "mask": "sample/mask-texture.png"
+    },
+    {
+      "concern": "dark_circle_v2",
+      "score": 78,
+      "mask": "sample/mask-dark_circle_v2.png"
+    },
+    {
+      "concern": "acne",
+      "score": 96,
+      "mask": "sample/mask-acne.png"
+    },
+    {
+      "concern": "wrinkle",
+      "score": 96,
+      "mask": "sample/mask-wrinkle.png"
+    },
+    {
+      "concern": "moisture",
+      "score": 82,
+      "mask": "sample/mask-moisture.png"
+    }
+  ],
+  "tone": {
+    "skin": "#bc9d88",
+    "lip": "#be8782",
+    "eye": "Brown",
+    "hair": "Auburn"
+  },
+  "tryon": {
+    "natural": "sample/look-natural.jpg"
+  },
+  "future": "sample/future.jpg",
+  "recordedAt": "2026-09-30T12:49:39.359Z"
+}

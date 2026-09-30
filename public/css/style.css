@@ -128,7 +128,7 @@ main { max-width: 560px; margin: 0 auto; padding: 20px 16px 110px; }
 .ring small { font-size: 11px; color: var(--muted); }
 .photo-wrap { position: relative; border-radius: var(--radius); overflow: hidden; background: #efe2d9; }
 .photo-wrap img { display: block; width: 100%; height: auto; }
-.photo-wrap .mask { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.85; mix-blend-mode: screen; pointer-events: none; }
+.photo-wrap .mask { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.8; pointer-events: none; }
 
 .concerns { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
 .concerns button, .concerns .row {
