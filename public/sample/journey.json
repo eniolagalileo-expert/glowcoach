@@ -51,7 +51,9 @@
     "hair": "Auburn"
   },
   "tryon": {
-    "natural": "sample/look-natural.jpg"
+    "natural": "sample/look-natural.jpg",
+    "everyday": "sample/look-everyday.jpg",
+    "evening": "sample/look-evening.jpg"
   },
   "future": "sample/future.jpg",
   "recordedAt": "2026-09-30T12:49:39.359Z"
