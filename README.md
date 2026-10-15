@@ -38,7 +38,7 @@ Requires Node 18+.
 ```
 cp .env.example .env    # then add your YOUCAM_API_KEY
 npm run dev             # http://localhost:8790
-npm test                # 30 tests: backend, coaching engine, storage
+npm test                # 34 tests: backend, coaching engine, storage
 ```
 
 To record the sample journey (about 41 units): `node scripts/record-sample.mjs`.
