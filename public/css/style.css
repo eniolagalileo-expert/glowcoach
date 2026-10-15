@@ -159,6 +159,13 @@ main { max-width: 560px; margin: 0 auto; padding: 20px 16px 110px; }
 .product .name { font-weight: 600; }
 .product .why { font-size: 13px; color: var(--muted); }
 .product .price { font-weight: 600; }
+.start-plan { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.start-plan li { background: var(--card); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: start; }
+.start-plan .week { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 6px 0; text-align: center; }
+.start-plan .name { font-weight: 600; }
+.start-plan .adds { font-size: 14px; }
+.start-plan .why { font-size: 13px; color: var(--muted); }
+.start-notes { margin: 12px 0 0; padding-left: 20px; font-size: 14px; color: var(--muted); }
 .total-bar {
   position: sticky; bottom: 88px; margin-top: 18px;
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
