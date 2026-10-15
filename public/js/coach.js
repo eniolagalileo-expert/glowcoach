@@ -179,3 +179,50 @@ export function simulationTargets(focus, strength = 0.6) {
   }
   return params;
 }
+
+// ---- Starting the routine ---------------------------------------------------
+
+const BASICS = new Set(['cleanser', 'moisturizer', 'spf']);
+
+// A 4-week plan that adds one kind of product at a time and phases in strong
+// actives (retinoids, exfoliating acids) a few nights a week, slower for skin
+// that already shows redness. Starting everything at once is the usual cause
+// of irritation, and irritated customers stop the routine or return it.
+export function startPlan(routine, scores) {
+  const redness = (scores ?? []).find((s) => s.concern === 'redness')?.score ?? 70;
+  const sensitive = redness < 55;
+  const products = routine.products;
+  const basics = products.filter((p) => BASICS.has(p.step));
+  const gentle = products.filter((p) => !BASICS.has(p.step) && !p.active);
+  const actives = products.filter((p) => p.active);
+  const nights = sensitive ? [1, 2] : [2, 3];
+  const names = (list) => list.map((p) => p.name);
+
+  const weeks = [
+    { week: 1, title: 'Build the base', add: names(basics), detail: 'Cleanse, moisturize, and wear SPF every morning. Let your skin settle.' },
+    gentle.length
+      ? { week: 2, title: 'Add your treatments', add: names(gentle), detail: 'Add one new product every few days, so you can tell what suits you.' }
+      : { week: 2, title: 'Keep it steady', add: [], detail: 'Same base routine, every day.' },
+  ];
+  if (actives.length) {
+    const a = names(actives).join(' and ');
+    weeks.push(
+      { week: 3, title: 'Start your active slowly', add: names(actives), activeNights: nights[0], detail: nights[0] > 1 ? `${a}: ${nights[0]} nights this week, never two in a row.` : `${a}: 1 night this week.` },
+      { week: 4, title: 'Build up', add: [], activeNights: nights[1], detail: `${a}: ${nights[1]} nights this week if your skin feels comfortable. Hold back a week if it stings or flakes.` },
+    );
+  } else {
+    weeks.push(
+      { week: 3, title: 'Full routine', add: [], detail: 'Everything, morning and night.' },
+      { week: 4, title: 'Rescan', add: [], detail: 'Scan again in similar light to see your first changes.' },
+    );
+  }
+
+  const notes = [];
+  if (sensitive && actives.length) notes.push(`Your redness score is ${redness}, so actives start more slowly than usual.`);
+  if (actives.some((p) => p.active === 'retinoid')) notes.push('Retinal makes skin more sun-sensitive: SPF every morning matters most.');
+  if (actives.length && routine.pm.some((p) => p.step === 'cleanser' && /acid/.test(p.ingredient))) {
+    notes.push('On active nights, keep the cleanse short. If your skin stings, skip the active that night.');
+  }
+  notes.push('Patch-test each new product on your jawline for 24 hours first.');
+  return { sensitive, weeks, notes };
+}

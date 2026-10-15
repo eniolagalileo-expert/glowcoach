@@ -2,7 +2,7 @@
 // bag, and progress. Coaching rules live in coach.js; storage in store.js.
 import { ApiError, getStatus, prepareImage, uploadPhoto, runTask } from './api.js';
 import {
-  CONCERN_LABELS, GOALS, BUDGETS, glowScore, scoreBand, buildRoutine, buildLooks, simulationTargets,
+  CONCERN_LABELS, GOALS, BUDGETS, glowScore, scoreBand, buildRoutine, buildLooks, simulationTargets, startPlan,
 } from './coach.js';
 import { productById, BRAND } from './catalog.js';
 import * as store from './store.js';
@@ -306,6 +306,12 @@ function renderPlan() {
   $('#plan-focus').textContent = `Built for ${r.type} skin, targeting ${r.focus.map((f) => f.label.toLowerCase()).join(', ')}. ${BRAND} sample products.`;
   $('#routine-am').innerHTML = r.am.map((p) => productCard(p)).join('');
   $('#routine-pm').innerHTML = r.pm.map((p) => productCard(p)).join('');
+  const plan = startPlan(r, state.scores);
+  $('#start-plan').innerHTML = plan.weeks.map((w) => `<li><div class="week">Week ${w.week}</div>
+    <div><div class="name">${escapeHtml(w.title)}</div>
+    ${w.add.length ? `<div class="adds">Add: ${w.add.map(escapeHtml).join(', ')}</div>` : ''}
+    <div class="why">${escapeHtml(w.detail)}</div></div></li>`).join('');
+  $('#start-notes').innerHTML = plan.notes.map((n) => `<li>${escapeHtml(n)}</li>`).join('');
   $('#plan-count').textContent = r.products.length;
   $('#plan-total').textContent = money(r.total);
 }

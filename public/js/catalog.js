@@ -6,14 +6,15 @@ export const BRAND = 'Lumen & Leaf';
 
 // concerns: skin-analysis concern names each product targets.
 // types: skin types it suits ('oily', 'dry', 'combination', 'normal').
+// active: strong ingredients that are introduced gradually ('retinoid', 'exfoliant').
 export const SKINCARE = [
   { id: 'cl-gel', step: 'cleanser', name: 'Clarity Gel Cleanser', ingredient: '0.5% salicylic acid', price: 16, tier: 1, concerns: ['acne', 'pore', 'oiliness'], types: ['oily', 'combination'] },
   { id: 'cl-cream', step: 'cleanser', name: 'Cloud Cream Cleanser', ingredient: 'ceramides + glycerin', price: 18, tier: 1, concerns: ['moisture', 'redness'], types: ['dry', 'normal', 'combination'] },
   { id: 'cl-balm', step: 'cleanser', name: 'Silk Balm Cleanser', ingredient: 'squalane + oat', price: 32, tier: 3, concerns: ['moisture', 'texture', 'redness'], types: ['dry', 'normal'] },
 
-  { id: 'se-bha', step: 'treatment', name: 'Pore Refine BHA Serum', ingredient: '2% salicylic acid', price: 24, tier: 2, concerns: ['acne', 'pore', 'oiliness', 'texture'], types: ['oily', 'combination', 'normal'], time: 'pm' },
+  { id: 'se-bha', step: 'treatment', name: 'Pore Refine BHA Serum', ingredient: '2% salicylic acid', price: 24, tier: 2, concerns: ['acne', 'pore', 'oiliness', 'texture'], types: ['oily', 'combination', 'normal'], time: 'pm', active: 'exfoliant' },
   { id: 'se-niacin', step: 'treatment', name: 'Even Tone Niacinamide 10%', ingredient: '10% niacinamide + zinc', price: 14, tier: 1, concerns: ['pore', 'oiliness', 'redness', 'acne'], types: ['oily', 'combination', 'normal', 'dry'], time: 'am' },
-  { id: 'se-retinal', step: 'treatment', name: 'Night Renew Retinal', ingredient: '0.05% retinal', price: 42, tier: 3, concerns: ['wrinkle', 'texture', 'acne'], types: ['normal', 'combination', 'oily'], time: 'pm' },
+  { id: 'se-retinal', step: 'treatment', name: 'Night Renew Retinal', ingredient: '0.05% retinal', price: 42, tier: 3, concerns: ['wrinkle', 'texture', 'acne'], types: ['normal', 'combination', 'oily'], time: 'pm', active: 'retinoid' },
   { id: 'se-peptide', step: 'treatment', name: 'Firm Peptide Serum', ingredient: 'peptides + hyaluronic acid', price: 29, tier: 2, concerns: ['wrinkle', 'moisture'], types: ['dry', 'normal', 'combination'], time: 'am' },
   { id: 'se-ha', step: 'treatment', name: 'Deep Drink Hyaluronic Serum', ingredient: 'multi-weight hyaluronic acid', price: 19, tier: 1, concerns: ['moisture', 'wrinkle'], types: ['dry', 'normal', 'combination', 'oily'], time: 'am' },
   { id: 'se-cica', step: 'treatment', name: 'Calm Cica Serum', ingredient: 'centella + panthenol', price: 22, tier: 2, concerns: ['redness', 'acne'], types: ['dry', 'normal', 'combination', 'oily'], time: 'pm' },
