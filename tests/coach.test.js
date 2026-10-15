@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   glowScore, scoreBand, skinType, priorities, buildRoutine, colorDistance, undertone,
-  matchFoundation, buildLooks, simulationTargets, CONCERN_LABELS,
+  matchFoundation, buildLooks, simulationTargets, startPlan, CONCERN_LABELS,
 } from '../public/js/coach.js';
 import { SKINCARE, FOUNDATION, ALL_PRODUCTS, productById } from '../public/js/catalog.js';
 import { buildTaskBody, SKIN_CONCERNS, SIMULATION_KEYS } from '../lib/tasks.js';
@@ -110,4 +110,41 @@ test('catalog is well formed', () => {
   }
   assert.equal(productById('se-bha').name, 'Pore Refine BHA Serum');
   assert.equal(productById('nope'), null);
+});
+
+test('start plan adds basics first and phases actives in slowly', () => {
+  const routine = buildRoutine(oilyAcne, { budget: 2 });
+  const plan = startPlan(routine, oilyAcne);
+  assert.equal(plan.weeks.length, 4);
+  const basics = routine.products.filter((p) => ['cleanser', 'moisturizer', 'spf'].includes(p.step)).map((p) => p.name);
+  assert.deepEqual(plan.weeks[0].add, basics);
+  const actives = routine.products.filter((p) => p.active).map((p) => p.name);
+  assert.ok(actives.length, 'oily, breakout-prone routine includes an active');
+  assert.deepEqual(plan.weeks[2].add, actives);
+  assert.deepEqual([plan.weeks[2].activeNights, plan.weeks[3].activeNights], [2, 3]);
+  const added = plan.weeks.flatMap((w) => w.add).sort();
+  assert.deepEqual(added, routine.products.map((p) => p.name).sort(), 'every product is introduced exactly once');
+});
+
+test('start plan slows actives down for skin with redness', () => {
+  const red = oilyAcne.map((s) => (s.concern === 'redness' ? { ...s, score: 45 } : s));
+  const plan = startPlan(buildRoutine(red, { budget: 2 }), red);
+  assert.equal(plan.sensitive, true);
+  assert.deepEqual([plan.weeks[2].activeNights, plan.weeks[3].activeNights], [1, 2]);
+  assert.match(plan.notes[0], /redness score is 45/);
+});
+
+test('start plan without actives ends with a rescan', () => {
+  const routine = buildRoutine(dryAging, { budget: 1 });
+  const plan = startPlan(routine, dryAging);
+  assert.ok(!routine.products.some((p) => p.active), 'dry routine has no actives');
+  assert.equal(plan.weeks[3].title, 'Rescan');
+  assert.ok(plan.notes.at(-1).startsWith('Patch-test'));
+});
+
+test('retinoid routines get an SPF reminder', () => {
+  const routine = buildRoutine(dryAging.map((s) => (s.concern === 'moisture' ? { ...s, score: 75 } : s)), { goals: ['youthful'], budget: 3 });
+  const plan = startPlan(routine, dryAging);
+  assert.ok(routine.products.some((p) => p.active === 'retinoid'), 'anti-aging routine includes retinal');
+  assert.ok(plan.notes.some((n) => /SPF/.test(n)));
 });
